@@ -78,6 +78,17 @@ public class UserController{
 	    // Redirect to the login page or any other page you desire
 	    return "redirect:/";
 	}
+	@GetMapping("/profileDisplay")
+	public String userProfile() {
+	    // Redirect to the update profile page
+	    return "redirect:/user/updateProfile";
+	}
+	
+	@GetMapping("/user/updateProfile")
+	public String showUpdateProfilePage() {
+	    return "updateProfile";
+	}
+
 
 	
 	
