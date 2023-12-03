@@ -25,6 +25,16 @@ public class cartDao {
     public List<Cart> getCarts() {
         return this.sessionFactory.getCurrentSession().createQuery("from CART").list();
     }
+    
+    @Transactional
+    public Cart getCart(int i) {
+        List<Cart> A=getCarts();
+        for(Cart x:A) {
+        	if(x.getId()==i)
+        		return x;
+        }
+        return null;
+    }
 
     @Transactional
     public void updateCart(Cart cart) {

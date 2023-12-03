@@ -28,6 +28,8 @@ public class User {
 	
 	private String address;
 	
+	//private Cart  cart=null;
+	
 	
 	public int getId() {
 		return id;
@@ -77,6 +79,4 @@ public class User {
 		this.address = address;
 	}
 	
-	 
-
 }

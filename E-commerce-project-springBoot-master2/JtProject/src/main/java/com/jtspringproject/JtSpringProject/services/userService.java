@@ -25,6 +25,20 @@ public class userService {
 	public User checkLogin(String username,String password) {
 		return this.userDao.getUser(username, password);
 	}
-
+    public User getuserbyname(String a)
+    {
+    	List<User> A=getUsers();
+    	User b = null;
+    	for(User x:A)
+    	{
+    		if(x.getUsername().equals(a))
+    		{
+    			return x;
+    		}
+    	}
+    	return b;
+   
+    }
+    	
 	
 }

@@ -45,7 +45,7 @@
                     <a class="nav-link" href="profileDisplay" >Profile</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" href="logout">Logout</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" href="logout" onclick="window.location.href='userLogin.jsp'">Logout</a>
                 </li>
                
             </ul>
@@ -95,7 +95,11 @@
               <h5 class="card-text">Category: ${product.category.name}</h5>
               <h5 class="card-text">Price: ${product.price}</h5>
               <p class="card-text">Description: ${product.description}</p>
-              <a href="#" class="btn btn-primary">Add to Cart</a>
+              <%--<a href="#" class="btn btn-primary">Add to Cart</a>  --%>
+              <form action="products/addtocart" method="get">
+                <input type="hidden" name="id" value="${product.id}">
+                <input type="submit" value="Add To Cart" class="btn btn-warning">
+            </form>
             </div>
           </div>
         </div> </c:forEach>

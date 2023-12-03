@@ -1,5 +1,6 @@
 package com.jtspringproject.JtSpringProject.controller;
 
+import com.jtspringproject.JtSpringProject.dao.userDao;
 import com.jtspringproject.JtSpringProject.models.Cart;
 import com.jtspringproject.JtSpringProject.models.Product;
 import com.jtspringproject.JtSpringProject.models.User;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jtspringproject.JtSpringProject.services.userService;
@@ -37,6 +39,12 @@ public class UserController{
 
 	@Autowired
 	private productService productService;
+	
+	@Autowired
+	private userDao a;
+	
+	@Autowired
+	private cartService b;
 
 	@GetMapping("/register")
 	public String registerUser()
@@ -56,6 +64,23 @@ public class UserController{
 		
 		return "userLogin";
 	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpServletResponse response, SessionStatus sessionStatus) {
+	    // Invalidate the session
+	    sessionStatus.setComplete();
+
+	    // Remove the username cookie
+	    Cookie cookie = new Cookie("username", null);
+	    cookie.setMaxAge(0);
+	    response.addCookie(cookie);
+
+	    // Redirect to the login page or any other page you desire
+	    return "redirect:/";
+	}
+
+	
+	
 	@RequestMapping(value = "userloginvalidate", method = RequestMethod.POST)
 	public ModelAndView userlogin( @RequestParam("username") String username, @RequestParam("password") String pass,Model model,HttpServletResponse res) {
 		
@@ -150,12 +175,50 @@ public class UserController{
 			
 		}
 
+		 
+	   //jjjjj
+		  @Autowired
+		    private cartService cartService;
 
-//	@GetMapping("carts")
-//	public ModelAndView  getCartDetail()
-//	{
-//		ModelAndView mv= new ModelAndView();
-//		List<Cart>carts = cartService.getCarts();
-//	}
-	  
+		    @GetMapping("/products/addtocart")
+		    public String addToCart(@RequestParam("id") int productId, @CookieValue("username") String username) {
+		        // Retrieve the user based on the username (you might need to implement this method in userService)
+		      try { 
+		    	User user = userService.getuserbyname(username);
+                 System.out.println("i am called");
+		        // Retrieve the product based on the productId
+		        //Product product = productService.getProduct(productId);
+
+		        // Create a new cart or retrieve the existing cart for the user
+		       Cart cart=new Cart();
+		       cart.setCustomer(user);
+		      // cartService.addCart(cart);
+		       //Cart cart=cartService.getCart(cart.getId());
+		        // Add the product to the cart
+		        cart.addProduct(productService.getProduct(productId));
+		        cartService.addCart(cart);
+		        // Update the cart in the database
+		       // cartService.updateCart(cart);
+
+		        // Redirect back to the product listing page or wherever you want
+		        return "redirect:/user/products";
+		      }
+		      catch (Exception e)
+		      {
+		    	  e.printStackTrace();
+		    	  return "redirect:/user/products";
+		      }
+		    }
+	         
+	    
+	    //pppppppp
+	    //ppp
+	@GetMapping("carts")
+	public ModelAndView  getCartDetail()
+	{
+		ModelAndView mv= new ModelAndView();
+		List<Cart>carts =b.getCarts();
+		return mv;
+	}
+	  //pppp
 }
